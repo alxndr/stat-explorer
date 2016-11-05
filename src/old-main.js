@@ -1,3 +1,9 @@
+diff --git a/src/main.js b/src/main.js
+deleted file mode 100644
+index 812c40a..0000000
+--- a/src/main.js
++++ /dev/null
+@@ -1,52 +0,0 @@
 const randomCallbackName = () => `callback${Math.random().toString().replace(".", "")}`;
 
 const jsonp = (url, callback) => {
