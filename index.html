@@ -29,11 +29,14 @@
      };
 
      jsonp(
-       pnet({method: "pnet.shows.setlists.latest"}),
+       pnet({method: "pnet.shows.setlists.tiph"}),
        (data) => {
-         const mostRecentShow = data[0];
-         const div = el("div", text(`The most recent show was ${mostRecentShow.nicedate} at ${mostRecentShow.venue} in ${mostRecentShow.city}, ${mostRecentShow.state}.`));
-         document.body.appendChild(div);
+         const tiph = data[0];
+         document.body.appendChild(
+           el("div",
+             text(`Today in Phish History: ${tiph.nicedate} at ${tiph.venue} in ${tiph.city}, ${tiph.state}: ${tiph.setlistnotes}`)
+           )
+         );
        }
      );
     </script>
