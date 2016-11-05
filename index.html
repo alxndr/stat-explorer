@@ -15,26 +15,31 @@
      const apiUrl = "https://api.phish.net/api.js";
      const pnet = ({method}) => `${apiUrl}?method=${method}`;
 
-     const el = (tagName, child=undefined) => {
+     const el = (tagName, ...children) => {
        const element = document.createElement(tagName);
-       if (child) {
-         element.appendChild(child);
+       if (children) {
+         console.log("children", children);
+         if (children.length === 1) {
+           element.appendChild(children[0]);
+         } else {
+           children.map(element.appendChild.bind(element));
+         }
        }
        return element;
      };
      const text = (content) => {
-       const n = document.createElement("span");
-       n.innerHTML = content;
-       return n;
+       return document.createTextNode(content);
      };
 
      jsonp(
        pnet({method: "pnet.shows.setlists.tiph"}),
        (data) => {
-         const tiph = data[0];
+         const {nicedate, venue, city, state, setlistnotes} = data[0];
+         const sanitizedNotes = setlistnotes.replace(/&#39;/g, "'").replace(/&nbsp;/g, " ");
          document.body.appendChild(
            el("div",
-             text(`Today in Phish History: ${tiph.nicedate} at ${tiph.venue} in ${tiph.city}, ${tiph.state}: ${tiph.setlistnotes}`)
+             el("h1", text("Today in Phish History!")),
+               el("p", text(`${nicedate} at ${venue} in ${city}, ${state}: ${sanitizedNotes}`))
            )
          );
        }
