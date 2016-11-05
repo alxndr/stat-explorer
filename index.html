@@ -10,7 +10,7 @@
        }
        scriptEl.setAttribute("src", `${url}${url.indexOf("?") > -1 ? "&" : "?"}callback=${callbackName}`);
        document.body.appendChild(scriptEl);
-     }
+     };
 
      const apiUrl = "https://api.phish.net/api.js";
      const pnet = ({method}) => `${apiUrl}?method=${method}`;
