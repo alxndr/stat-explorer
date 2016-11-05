@@ -23,7 +23,9 @@
        return element;
      };
      const text = (content) => {
-       return document.createTextNode(content);
+       const n = document.createElement("span");
+       n.innerHTML = content;
+       return n;
      };
 
      jsonp(
