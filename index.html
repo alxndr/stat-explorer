@@ -1,0 +1,39 @@
+<html>
+  <body>
+    <script>
+     const jsonp = (url, callback) => {
+       const callbackName = `callback${Math.random().toString().replace(".", "")}`;
+       const scriptEl = document.createElement("script");
+       window[callbackName] = (...args) => {
+         document.body.removeChild(scriptEl);
+         return callback(...args);
+       }
+       scriptEl.setAttribute("src", `${url}${url.indexOf("?") > -1 ? "&" : "?"}callback=${callbackName}`);
+       document.body.appendChild(scriptEl);
+     }
+
+     const apiUrl = "https://api.phish.net/api.js";
+     const pnet = ({method}) => `${apiUrl}?method=${method}`;
+
+     const el = (tagName, child=undefined) => {
+       const element = document.createElement(tagName);
+       if (child) {
+         element.appendChild(child);
+       }
+       return element;
+     };
+     const text = (content) => {
+       return document.createTextNode(content);
+     };
+
+     jsonp(
+       pnet({method: "pnet.shows.setlists.latest"}),
+       (data) => {
+         const mostRecentShow = data[0];
+         const div = el("div", text(`The most recent show was ${mostRecentShow.nicedate} at ${mostRecentShow.venue} in ${mostRecentShow.city}, ${mostRecentShow.state}.`));
+         document.body.appendChild(div);
+       }
+     );
+    </script>
+  </body>
+</html>
