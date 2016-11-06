@@ -4,7 +4,7 @@
   "description": "explore Phish setlist stats",
   "main": "main.js",
   "scripts": {
-    "build": "babel src -d lib",
+    "build": "browserify src/*.js --outfile bundle.js --transform [babelify --presets [latest] --sourceType module]",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -27,6 +27,9 @@
   "homepage": "https://github.com/alxndr/stat-explorer#readme",
   "devDependencies": {
     "babel-cli": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0"
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-latest": "^6.16.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.1"
   }
 }

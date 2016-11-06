@@ -1,3 +1,5 @@
+import {pluralize} from "./utils";
+
 const now = new Date();
 
 const checkStatus = (response) => {
@@ -36,7 +38,6 @@ const tag = {
 });
 
 const compareStartDates = (a, b) => a.starts_on < b.starts_on ? -1 : a.starts_on == b.starts_on ? 0 : 1;
-const pluralize = (count, term) => `${count} ${term}${count === 1 ? "" : "s"}`;
 
 function fetchToursData() {
   fetch(`http://phish.in/api/v1/tours?per_page=100`)
@@ -45,6 +46,12 @@ function fetchToursData() {
     .then(({data: toursData}) => {
       console.log("toursData", toursData);
       const toursDataSorted = toursData.sort(compareStartDates);
+      document.body.appendChild(
+        tag.div(
+          tag.h1(`In Phish's ${pluralize(toursData.length, "tour")}...`),
+          tag.p(`The most shows they played in a "tour" was ${/*toursData.reduce(max("shows_count"))*/"?"}`)
+        )
+      );
     });
 }
 
