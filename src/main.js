@@ -17,7 +17,8 @@ const parseJSON = (response) => {
 const compareStartDates = (a, b) => a.starts_on < b.starts_on ? -1 : a.starts_on == b.starts_on ? 0 : 1;
 
 function fetchToursData() {
-  fetch(`http://phish.in/api/v1/tours?per_page=100`)
+  // TODO this is still a bare `fetch` in the bundled js
+  fetch("//phish.in/api/v1/tours?per_page=100")
     .then(checkStatus)
     .then(parseJSON)
     .then(({data: toursData}) => {
