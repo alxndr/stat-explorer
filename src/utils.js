@@ -21,11 +21,10 @@ export const text = (content) => {
   return document.createTextNode(sanitized);
 };
 
-const tag = {
+export const tag = {
   // holder of helper functions for creating common HTML elements
   div: (...children) => el("div", ...children)
 };
 ["h1", "h2", "p"].forEach((tagName) => {
   tag[tagName] = (content) => el(tagName, text(content));
 });
-export tag;
