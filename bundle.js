@@ -17,7 +17,40 @@ var parseJSON = function parseJSON(response) {
   return response.json();
 };
 
-var el = function el(tagName) {
+var compareStartDates = function compareStartDates(a, b) {
+  return a.starts_on < b.starts_on ? -1 : a.starts_on == b.starts_on ? 0 : 1;
+};
+
+function fetchToursData() {
+  // TODO this is still a bare `fetch` in the bundled js
+  fetch("//phish.in/api/v1/tours?per_page=100").then(checkStatus).then(parseJSON).then(function (_ref) {
+    var toursData = _ref.data;
+
+    console.log("toursData", toursData);
+    var toursDataSorted = toursData.sort(compareStartDates);
+    document.body.appendChild(_utils.tag.div(_utils.tag.h1("In Phish's " + (0, _utils.pluralize)(toursData.length, "tour") + "..."), _utils.tag.p("The most shows they played in a \"tour\" was " + /*toursData.reduce(max("shows_count"))*/"?")));
+  });
+}
+
+window.main = function () {
+  fetchToursData();
+};
+
+},{"./utils":2}],2:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// string helpers
+
+var pluralize = exports.pluralize = function pluralize(count, term) {
+  return count + " " + term + (count === 1 ? "" : "s");
+};
+
+// html helpers
+
+var el = exports.el = function el(tagName) {
   for (var _len = arguments.length, children = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     children[_key - 1] = arguments[_key];
   }
@@ -32,11 +65,13 @@ var el = function el(tagName) {
   }
   return element;
 };
-var text = function text(content) {
+
+var text = exports.text = function text(content) {
   var sanitized = content.replace(/&#39;/g, "'").replace(/&nbsp;/g, " ");
   return document.createTextNode(sanitized);
 };
-var tag = {
+
+var tag = exports.tag = {
   // holder of helper functions for creating common HTML elements
   div: function div() {
     for (var _len2 = arguments.length, children = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
@@ -51,33 +86,5 @@ var tag = {
     return el(tagName, text(content));
   };
 });
-
-var compareStartDates = function compareStartDates(a, b) {
-  return a.starts_on < b.starts_on ? -1 : a.starts_on == b.starts_on ? 0 : 1;
-};
-
-function fetchToursData() {
-  fetch("http://phish.in/api/v1/tours?per_page=100").then(checkStatus).then(parseJSON).then(function (_ref) {
-    var toursData = _ref.data;
-
-    console.log("toursData", toursData);
-    var toursDataSorted = toursData.sort(compareStartDates);
-    document.body.appendChild(tag.div(tag.h1("In Phish's " + (0, _utils.pluralize)(toursData.length, "tour") + "..."), tag.p("The most shows they played in a \"tour\" was " + /*toursData.reduce(max("shows_count"))*/"?")));
-  });
-}
-
-window.main = function () {
-  fetchToursData();
-};
-
-},{"./utils":2}],2:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var pluralize = exports.pluralize = function pluralize(count, term) {
-  return count + " " + term + (count === 1 ? "" : "s");
-};
 
 },{}]},{},[1,2]);
